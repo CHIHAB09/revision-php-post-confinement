@@ -14,6 +14,73 @@ if(isset($_GET['p'])&&$_GET['p']=="disconnect"){
     header("Location: ./");
     exit;
 }
+// si on est sur le détail d'un article
+if(isset($_GET["detailArticle"])){
+    // conversion en int, vaut 0 si la conversion échoue
+    $idArticles = (int) $_GET["detailArticle"];
+    // si la convertion échoue redirection sur l'accueil
+    if(!$idArticles) {
+        header("Location: ./");
+        exit();
+    }
+    // appel de la fonction du modèle articlesModel.php
+    $recup = articleLoadFull($db,$idArticles);
+
+    // pas d'article, la page n'existe pas
+    if(!$recup){
+        $erreur = "Cet article n'existe plus";
+    }
+
+
+
+    // view
+    require_once "view/adminDetailArticleView.php";
+    exit();
+
+}
+//on a cliqué sur crée un article
+
+if(isset($_GET['p'])&&$_GET['p']=="create"){
+
+    // si on a envoier le formulaire ( toutes les variables POST attendues existent)
+    if(isset($_POST['titre'],$_POST['texte'],$_POST['idusers'])){
+
+        // traitement des variables
+        $titre= htmlspecialchars(strip_tags(trim($_POST['titre'])),ENT_QUOTES);
+        //execption pour le strip_tags qui va accepter
+        $texte= htmlspecialchars(strip_tags(trim($_POST['titre']),'<p><br><a><img><h4><h5><b><i><strong><ul><li>'),ENT_QUOTES);
+        $idusers= (int) $_POST['idusers'];
+
+        //si un des champs est vide (n'a pas reussi la validation des variables POST)
+
+        if(empty($titre) || empty($texte) ||empty($idusers)){
+            $erreur= "Format des champs non valides";
+        }else{
+          //insertion d'article
+            $insert= insertArticle($db,$titre,$texte,$idusers);
+            if($insert){
+                header("location: ./");
+                exit;
+            }else{
+
+
+
+
+                $erreur = "Probleme lors de l'insertion";
+            }
+
+        }
+
+    }
+
+
+    //on recupere tous les auteurs potentiels
+    $recup_auteurs = Alluser($db);
+
+    require_once "view/adminInsertArticleView.php";
+    exit();
+}
+
 
 // Mise en place de la pagination
 

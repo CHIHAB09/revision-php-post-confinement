@@ -78,3 +78,12 @@ function articleLoadFull($connect,$id){
     // no result
     return false;
 }
+
+// insertiton d'un nouvel article
+function insertArticle ($c,$title,$text,$id){
+    $sql="INSERT INTO articles (titre,texte,users_id_users) VALUES ('$title','$text',$id); ";
+    $request=mysqli_query($c,$sql) or die (mysqli_error($c));
+    return ($request) ?true:false;
+
+
+}
