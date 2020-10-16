@@ -15,6 +15,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="?p=create">Creation d'un nouvel article</a>
+                </li>
+
 
                 <li class="nav-item">
                     <a class="nav-link" href="?p=disconnect">Déconnexion</a>
@@ -33,10 +37,35 @@
             <div class="col-lg-8 col-md-7 col-sm-6">
                 <h1>Administration</h1>
                 <p class="lead">Bienvenue <?=$_SESSION['thename']?>, vous êtes <?=$_SESSION['droit_name']?></p>
-                <hr>
+                <?php
+                if(isset($erreur)):
+                    ?>
 
-    <?php var_dump($_SESSION) ?>
+                    <h1><?=$erreur?></h1>
 
+                <?php
+                else:
+                    ?>
+                    <h2>Tous les articles <a href="?p=create" title="Ajouter un artile "><img src="img/add.png" alt="add"/></h2>
+                    <p class="lead">Nombre d'articles: <?=$nbTotalArticles?></p>
+                    <?php
+                    // affichage de la pagination
+                    echo $pagination;
+                    // tant que nous avons des articles
+                    foreach($recupPagination as $item):
+                        ?>
+                        <h3><?=$item["titre"]?></h3>
+                        <a href="?p=update&id<?=$item["idarticles"]?>" title="Mettre à jour "></a><img src="img/update.png" alt="update"/>
+                        <a href="?p=delete&id<?=$item["iddelete"]?>" title="Supprimer l'article  "></a><img src="img/delete.png" alt="delete"/>
+                        <p><?=cutTheTextModel($item["texte"])?> ... <a href="?detailArticle=<?=$item["idarticles"]?>">Lire la suite</a></p>
+                        <h5>Par <?=$item["thename"]?> <?=functionDateModel($item["thedate"])?></h5>
+                        <hr>
+                    <?php
+                    endforeach;
+                    echo $pagination;
+                endif;
+
+                ?>
 
             </div>
 
