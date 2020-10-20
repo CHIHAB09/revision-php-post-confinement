@@ -92,6 +92,34 @@ if(isset($_GET['p'])&&$_GET['p']=="delete"){
         //conversion en numerique entier
         $id=(int) $_GET['id'];
 
+
+        //on recupere l'article
+        $recup= articleLoadFull($db,$id);
+
+        //pas de recuperation
+        if(!$recup){
+            $erreur = "Article introuvable";
+
+        }else{
+            $titltle=  $recup['titre'];
+            $author= $recup['thename'];
+            //on clique sur confirmation de suppression
+            if(isset($_GET['ok'])){
+
+                // on tente de supprimer l'article
+                if(deleteArticle($db,$id)){
+                    $erreur="Suppression effectuée, vous allez etre rediriger dans 5 seconde <script>setTimeout(function(){ document.location.href = './' }, 5000);</script>";
+                }else{
+                    $erreur="Echec de la suppression, erreur inconnu,veuillez recommencer!";
+                }
+
+            }
+
+        }
+
+
+
+
     }else{
         $erreur ="Format de l'ID non valable";
     }
@@ -100,6 +128,28 @@ if(isset($_GET['p'])&&$_GET['p']=="delete"){
 }
 
 
+//on a cliqué sur modifier un article
+
+if(isset($_GET['p'])&&$_GET['p']=="update"){
+
+    // si la variable d id existe et est une chaine de caractere ne contenant qu' un entier positif non signé
+    if(isset($_GET['id'])&&ctype_digit($_GET['id'])){
+
+        //conversion en numerique entier
+        $id=(int) $_GET['id'];
+
+
+        //on recupere l'article
+        $recupArticle= articleLoadFull($db,$id);
+        // on recupere tous les auteurs
+        $recupUsers= AllUser($db);
+
+    }else{
+        $erreur ="Format de l'ID non valable";
+    }
+    require_once "view/adminUpdateArticleView.php";
+    exit();
+}
 
 // Mise en place de la pagination
 
