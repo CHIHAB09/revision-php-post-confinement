@@ -28,7 +28,8 @@ if(isset($_GET['pg'])){
     $fin_tab = 10; // 10
     for($i=$debut_tab;$i<($debut_tab+$fin_tab);$i++){
         // si $i est plus grand ou égal au nombre de pays dans le tableau, on arrête la boucle
-        if($i>=$nb_item) break;
+        if($i>=$nb_item)
+            break;
         echo $countries[$i]." | ";
     }
     ?>
@@ -48,7 +49,8 @@ echo "<hr>";
         $fin_tab = NUMBER_ARTICLE_PER_PAGE;// 5
         for($i=$debut_tab;$i<($debut_tab+$fin_tab);$i++){
             // si $i est plus grand ou égal au nombre de pays dans le tableau, on arrête la boucle
-            if($i>=$nb_item) break;
+            if($i>=$nb_item)
+                break;
             echo $countries[$i]." | ";
         }
         ?>
