@@ -48,7 +48,7 @@ if(isset($_GET['p'])&&$_GET['p']=="create"){
         // traitement des variables
         $titre= htmlspecialchars(strip_tags(trim($_POST['titre'])),ENT_QUOTES);
         //execption pour le strip_tags qui va accepter
-        $texte= htmlspecialchars(strip_tags(trim($_POST['titre']),'<p><br><a><img><h4><h5><b><i><strong><ul><li>'),ENT_QUOTES);
+        $texte= htmlspecialchars(strip_tags(trim($_POST['texte']),'<p><br><a><img><h4><h5><b><i><strong><ul><li>'),ENT_QUOTES);
         $idusers= (int) $_POST['idusers'];
 
         //si un des champs est vide (n'a pas reussi la validation des variables POST)
@@ -80,6 +80,25 @@ if(isset($_GET['p'])&&$_GET['p']=="create"){
     require_once "view/adminInsertArticleView.php";
     exit();
 }
+
+
+//on a cliqué sur supprimer un article
+
+if(isset($_GET['p'])&&$_GET['p']=="delete"){
+
+    // si la variable d id existe et est une chaine de caractere ne contenant qu' un entier positif non signé
+    if(isset($_GET['id'])&&ctype_digit($_GET['id'])){
+
+        //conversion en numerique entier
+        $id=(int) $_GET['id'];
+
+    }else{
+        $erreur ="Format de l'ID non valable";
+    }
+    require_once "view/adminDeleteArticleView.php";
+    exit();
+}
+
 
 
 // Mise en place de la pagination
